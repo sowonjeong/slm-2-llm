@@ -49,6 +49,7 @@ optimal_threshold_f1 <- thresholds[which.max(f1_scores)]
 optimal_threshold_f1
 
 
+
 opt_threshold = function(y_pred_prob, y_true){
   
   y_true = factor(y_true, levels = c(0,1))
@@ -59,6 +60,13 @@ opt_threshold = function(y_pred_prob, y_true){
   
   optimal_idx <- which.max(roc_obj$sensitivities + roc_obj$specificities - 1)
   optimal_threshold_roc <- roc_obj$thresholds[optimal_idx]
+  
+  
+  distances <- sqrt((1 - roc_obj$sensitivities)^2 + (roc_obj$specificities - 1)^2)
+  
+  # Find the threshold that minimizes the distance
+  optimal_idx <- which.min(distances)
+  optimal_threshold_roc_dist <- roc_obj$thresholds[optimal_idx]
   
   # F1 score maximization
   thresholds <- unique(y_pred_prob)
@@ -74,6 +82,7 @@ opt_threshold = function(y_pred_prob, y_true){
   optimal_threshold_f1 <- thresholds[which.max(f1_scores)]
   
   return(list(optimal_threshold_roc = optimal_threshold_roc, 
+              optimal_threshold_roc_dist = optimal_threshold_roc_dist,
               optimal_threshold_f1 = optimal_threshold_f1))
 }
 
@@ -84,9 +93,11 @@ apply_opt_threshold <- function(y_pred_prob_matrix, y_true) {
   })
   
   optimal_thresholds_roc <- sapply(results, function(res) res$optimal_threshold_roc)
+  optimal_thresholds_roc_dist <- sapply(results, function(res) res$optimal_threshold_roc_dist)
   optimal_thresholds_f1 <- sapply(results, function(res) res$optimal_threshold_f1)
   
   return(list(optimal_thresholds_roc = optimal_thresholds_roc, 
+              optimal_thresholds_roc_dist = optimal_thresholds_roc_dist,
               optimal_thresholds_f1 = optimal_thresholds_f1))
 }
 
