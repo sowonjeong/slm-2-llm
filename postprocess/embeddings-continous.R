@@ -8,7 +8,7 @@ library(syllogi)
 library(NMF)
 
 setwd("..")
-source("utils/utils.R") # NEED to specify the path
+source("utils/utils.R") 
 source("utils/threshold.R")
 
 

@@ -37,11 +37,13 @@ rownames(tpcs3$theta)[order(tpcs3$theta[,1], decreasing=TRUE)[1:10]]
 
 ## Numerical Decomposition Approach
 ## Nonnegative Matrix Factorization
+
 # NMF R package has an issue -- so I load the computed decomposition from python
 # W = read.csv("NMF_W.csv", header = FALSE) # topic-word 85 x 10
 # H = read.csv("NMF_H.csv", header = FALSE) # document-topic 10 x 8382
+
 # Run sklearn in R
-use_condaenv('py3.11', required = TRUE)
+use_condaenv('py3.11', required = TRUE) # specify the conda environment
 sklearn <- import("sklearn")
 model1 <- sklearn$decomposition$NMF(
   n_components = 10L,  # number of topics
