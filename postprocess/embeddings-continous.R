@@ -7,44 +7,43 @@ library(NLP)
 library(syllogi)
 library(NMF)
 
-source("/Users/sowonjeong/txt-analysis/data/utils.R") # NEED to specify the path
+setwd("..")
+source("utils/utils.R") # NEED to specify the path
+source("utils/threshold.R")
 
-# Read the CSV file
-setwd("/Users/sowonjeong/Dropbox/LLM_FEDERALIST/data")
-setwd("/Users/sowonjeong/txt-analysis/data")
 
 # 1041 x 768
-chunk_df <- read.csv("chunk_embedding_200.csv", header = FALSE)
-chunk_author <- read.csv("chunking_author_200.csv")
-avg_chunk_df <- read.csv("avg_chunk_embedding.csv", header = FALSE)
+chunk_df <- read.csv("data/chunk_embedding_200.csv", header = FALSE)
+chunk_author <- read.csv("data/chunking_author_200.csv")
+avg_chunk_df <- read.csv("data/avg_chunk_embedding.csv", header = FALSE)
 
 # 5738 x 768
-sentence_df <- read.csv("sent_embedding.csv", header = FALSE)
-sentence_author <- read.csv("sentence_author.csv")
-avg_sentence_df <- read.csv("avg_sent_embedding.csv", header = FALSE)
+sentence_df <- read.csv("data/sent_embedding.csv", header = FALSE)
+sentence_author <- read.csv("data/sentence_author.csv")
+avg_sentence_df <- read.csv("data/avg_sent_embedding.csv", header = FALSE)
 
 
 # 5738 x 768
-bert_sentence_df <- read.csv("bert_sentence_embedding.csv", header = FALSE)
-bart_sentence_df <- read.csv("bart_sentence_embedding.csv", header = FALSE)
+bert_sentence_df <- read.csv("data/bert_sentence_embedding.csv", header = FALSE)
+bart_sentence_df <- read.csv("data/bart_sentence_embedding.csv", header = FALSE)
 # 5738 x 4096
-llama2_sentence_df <- read.csv("llama2_sentence_embedding.csv", header = FALSE)
+llama2_sentence_df <- read.csv("data/llama2_sentence_embedding.csv", header = FALSE)
 # 5738 x 4096
-llama3_sentence_df <- read.csv("llama3_sentence_embedding.csv", header = FALSE)
+llama3_sentence_df <- read.csv("data/llama3_sentence_embedding.csv", header = FALSE)
 
-roberta_sentence_df = read.csv("roberta_sentence_embedding.csv", header = FALSE)
-gpt_sentence_df = read.csv("gpt_sent_embeddings.csv",header=FALSE)
-sentence_author <- read.csv("sentence_author.csv")
+roberta_sentence_df = read.csv("data/roberta_sentence_embedding.csv", header = FALSE)
+gpt_sentence_df = read.csv("data/gpt_sent_embeddings.csv",header=FALSE)
+sentence_author <- read.csv("data/sentence_author.csv")
 
 
 # 85 x feat
-bert_df = read.csv("bert_avg_doc_embedding.csv", header = FALSE)
-bart_df = read.csv("bart_avg_doc_embedding.csv", header = FALSE)
-llama2_df = read.csv("llama2_avg_doc_embedding.csv", header = FALSE)
-llama3_df = read.csv("llama3_avg_doc_embedding.csv", header = FALSE)
-gpt_df = read.csv("gpt_embeddings.csv", header = FALSE)
+bert_df = read.csv("data/bert_avg_doc_embedding.csv", header = FALSE)
+bart_df = read.csv("data/bart_avg_doc_embedding.csv", header = FALSE)
+llama2_df = read.csv("data/llama2_avg_doc_embedding.csv", header = FALSE)
+llama3_df = read.csv("data/llama3_avg_doc_embedding.csv", header = FALSE)
+gpt_df = read.csv("data/gpt_embeddings.csv", header = FALSE)
 gpt_df = gpt_df[-1,-1]
-roberta_df = read.csv("roberta_avg_doc_embedding.csv",header = FALSE)
+roberta_df = read.csv("data/roberta_avg_doc_embedding.csv",header = FALSE)
 
 authors = rep(0,85)
 
