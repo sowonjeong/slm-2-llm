@@ -9,7 +9,7 @@ This repository contains the code used for all experiments in the paper: [From S
 .
 ├── data/                  # Contains raw and processed Federalist Papers data
 ├── eda/                   # Notebooks and scripts for exploratory data analysis
-├── embeddings/            # Scripts for generating and saving embeddings
+├── llm-embeddings/        # Scripts for generating and saving LLM embeddings
 ├── postprocess/           # Postprocessing and analysis of embeddings
 ├── utils/                 # Shared utility functions
 └── README.md              # Project documentation
@@ -22,30 +22,52 @@ This repository contains the code used for all experiments in the paper: [From S
 Located in the `eda/` directory, this step includes:
 
 - Parsing and cleaning the Federalist Papers text
-- Visualizing word frequency, document lengths, and authorship distribution
-- Basic linguistic and stylistic features across authors (Hamilton, Madison, Jay)
-
-Tools used: `pandas`, `matplotlib`, `seaborn`, `spaCy`
+- Visualizing word frequency, document lengths, and topic assignment
 
 ---
 
 ## 2️⃣ Embedding Generation
 
-We generate embeddings using both transformer-based models and API-based methods.
+We generate embeddings using both small and large language model.
 
-### 🧠 Local Model Embeddings
+### 🧠 Large Model Embeddings
 
-Implemented models:
+Tested models:
 - **BERT** (`bert-base-uncased`)
 - **RoBERTa** (`roberta-base`)
 - **BART** (`facebook/bart-base`)
 - **LLaMA** (via `transformers`, if locally supported or via Hugging Face inference endpoints)
 
-Each paper is embedded at the sentence or document level by mean pooling the token embeddings.
+You can adapt the following template to load and generate embeddings for any Hugging Face model.
+
+👉 Example: [`example-llama.ipynb`](llm-embeddings/example-llama.ipynb)
+
+```python
+from transformers import  BertModel, BertTokenizer
+from transformers import pipeline
+import torch
+
+# Load pre-trained BERT model and tokenizer
+model = BertModel.from_pretrained("bert-base-uncased)
+bert_tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+
+text = "To the People of the State of New York"
+
+# Load the fine-tuned BERT model for feature extraction
+bert_extractor = pipeline(
+    task="feature-extraction",
+    model=model,
+    tokenizer=takenizer,
+    device=0  # Use GPU if available
+)
+bert_extractor(text.astype(str).tolist(), return_tensors=True)
+```
 
 ### ☁️ GPT API Embeddings
 
 We also generate embeddings using OpenAI's `text-embedding-ada-002` and other available GPT models via API.
+
+👉 Example: [`GPT-API-embedding.ipynb`](llm-embeddings/GPT-API-embedding.ipynb)
 
 Requires:
 - OpenAI API key
@@ -57,18 +79,30 @@ Requires:
 
 Postprocessing steps (in `postprocess/` directory) include:
 
-- Download the pretrained Word2Vec model [here](https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?resourcekey=0-wjGZdNAUop6WykTtMip30g)
-- Normalization and dimensionality reduction (e.g., PCA, t-SNE, UMAP)
-- Clustering (e.g., KMeans, Agglomerative)
-- Similarity heatmaps and distance-based analysis
-- Authorship inference based on clustering structure or nearest-neighbor methods
+Thanks for the clarification! Here's the corrected and polished version of the **Postprocessing** section for your `README.md`:
 
 ---
 
-## 🧪 Environment & Requirements
+## 3️⃣ Postprocessing Embeddings
+
+Located in the `postprocess/` directory, this stage includes:
+
+1. **Word2Vec Embedding Generation**  
+   - Code for generating Word2Vec-based embeddings from the Federalist Papers.  
+   - 📥 Requires downloading the pretrained Google News Word2Vec model [here](https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?resourcekey=0-wjGZdNAUop6WykTtMip30g).
+
+2. **Classification Models (BART & LASSO)**  
+   - Scripts to train and evaluate classifiers (e.g., BART, LASSO) on various embeddings:
+     - Continuous LLM embeddings (e.g., from BERT, GPT)
+     - Bag-of-Words (BoW) embeddings (e.g., from LDA, LSA or NMF)
+
+3. **Benjamini-Hochberg (BH)** procedure for selecting words
+
+---
+
+## 🧪 Requirements
 
 You’ll need:
-- Python 3.8+
 - OpenAI API key (if using GPT embedding)
 - Hugging Face Token (if using open-source LLMs)
 - Access to GPU for large-scale embedding generation (optional but recommended)
