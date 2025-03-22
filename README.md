@@ -15,7 +15,7 @@ This repository contains the code used for the experiments in the paper: [From S
 └── README.md              # Project documentation
 ```
 
----
+
 
 ## 1️⃣ Exploratory Data Analysis (EDA)
 
@@ -24,7 +24,6 @@ Located in the `eda/` directory, this step includes:
 - Parsing and cleaning the Federalist Papers text
 - Visualizing word frequency, document lengths, and topic assignment
 
----
 
 ## 2️⃣ Embedding Generation
 
@@ -73,15 +72,6 @@ Requires:
 - OpenAI API key
 - Adherence to rate limits and token constraints
 
----
-
-## 3️⃣ Postprocessing Embeddings
-
-Postprocessing steps (in `postprocess/` directory) include:
-
-Thanks for the clarification! Here's the corrected and polished version of the **Postprocessing** section for your `README.md`:
-
----
 
 ## 3️⃣ Postprocessing Embeddings
 
@@ -98,7 +88,7 @@ Located in the `postprocess/` directory, this stage includes:
 
 3. **Benjamini-Hochberg (BH)** procedure for selecting words
 
----
+
 
 ## 🧪 Requirements
 
@@ -106,7 +96,7 @@ You’ll need:
 - OpenAI API key (if using GPT embedding)
 - Hugging Face Token (if using open-source LLMs)
 - Access to GPU for large-scale embedding generation (optional but recommended)
----
+
 
 ## 🤖 Credits
 
