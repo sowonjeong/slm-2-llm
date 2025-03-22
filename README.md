@@ -1,6 +1,6 @@
 # Small to Large Language Models: Revisiting the Federalist Papers
 
-This repository contains the code used for all experiments in the paper: [From Small to Large Language Models: Revisiting the Federalist Papers](https://arxiv.org/abs/2503.01869)
+This repository contains the code used for the experiments in the paper: [From Small to Large Language Models: Revisiting the Federalist Papers](https://arxiv.org/abs/2503.01869)
 
 
 ## 📁 Project Structure
