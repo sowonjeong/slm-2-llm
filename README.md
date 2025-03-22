@@ -100,4 +100,4 @@ You’ll need:
 
 ## 🤖 Credits
 
-This README and were generated and refined with the help of [ChatGPT](https://openai.com/chatgpt).
+This README was generated and refined with the help of [ChatGPT](https://openai.com/chatgpt).
