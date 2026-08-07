@@ -7,13 +7,14 @@ This repository contains the code used for the experiments in the paper: [From S
 
 ```
 .
-├── data/                  # Contains raw and processed Federalist Papers data
 ├── eda/                   # Notebooks and scripts for exploratory data analysis
 ├── llm-embeddings/        # Scripts for generating and saving LLM embeddings
 ├── postprocess/           # Postprocessing and analysis of embeddings
 ├── utils/                 # Shared utility functions
 └── README.md              # Project documentation
 ```
+
+Raw/processed Federalist Papers data and all pre-computed embeddings used in the analysis (Word2Vec, BERT, RoBERTa, BART, LLaMA 2/3, GPT --- document, sentence, and chunk level) are hosted here: 📂 [Download from Dropbox](https://www.dropbox.com/scl/fo/waxsepc6w7lgcvpa7w999/ALCFZXhnrweFzvohHG5865c?rlkey=ijixtx67fhjjjl786b8boc2ct&st=p7355uk8&dl=0)
 
 
 
