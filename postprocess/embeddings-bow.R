@@ -38,7 +38,7 @@ rownames(tpcs3$theta)[order(tpcs3$theta[,1], decreasing=TRUE)[1:10]]
 ## Numerical Decomposition Approach
 ## Nonnegative Matrix Factorization
 
-# NMF R package has an issue -- so I load the computed decomposition from python
+# NMF R package has an computational issue -- so I load the computed decomposition from python
 # W = read.csv("NMF_W.csv", header = FALSE) # topic-word 85 x 10
 # H = read.csv("NMF_H.csv", header = FALSE) # document-topic 10 x 8382
 
@@ -78,6 +78,7 @@ library(BART)
 bart_bow1 =  run_bart_binary(as.matrix(tdm1[select,]), as.matrix(tdm1[authors == 'UNKNOWN',]), authors_train)
 bart_bow2 =  run_bart_binary(as.matrix(tdm2[select,]), as.matrix(tdm2[authors == 'UNKNOWN',]), authors_train)
 bart_bow3 =  run_bart_binary(as.matrix(tdm3[select,]), as.matrix(tdm3[authors == 'UNKNOWN',]), authors_train)
+
 #LDA
 bart_lda1 = run_bart_binary(as.matrix(tpcs1$omega[select,]), as.matrix(tpcs1$omega[authors == 'UNKNOWN',]), authors_train)
 bart_lda_joint1 = run_bart_binary(as.matrix(tpcs1$omega[select,]), as.matrix(tpcs1$omega[authors == 'HAMILTON AND MADISON',]), authors_train)
@@ -110,20 +111,27 @@ lasso3 = run_lasso_binary(as.matrix(tdm3[select,]), as.matrix(tdm3[authors == 'U
 
 #LDA
 lasso_lda1 = run_lasso_binary(as.matrix(tpcs1$omega[select,]), as.matrix(tpcs1$omega[authors == 'UNKNOWN',]), authors_train)
+lasso_lda2 = run_lasso_binary(as.matrix(tpcs2$omega[select,]), as.matrix(tpcs2$omega[authors == 'UNKNOWN',]), authors_train)
+lasso_lda3 = run_lasso_binary(as.matrix(tpcs3$omega[select,]), as.matrix(tpcs3$omega[authors == 'UNKNOWN',]), authors_train)
+
 #SVD
-lasso_svd = run_lasso_binary(as.matrix(svd_res$u[select, ]), as.matrix(svd_res$u[authors == 'UNKNOWN',]), authors_train)
+lasso_svd1 = run_lasso_binary(as.matrix(svd_res1$u[select, ]), as.matrix(svd_res1$u[authors == 'UNKNOWN',]), authors_train)
+lasso_svd2 = run_lasso_binary(as.matrix(svd_res2$u[select, ]), as.matrix(svd_res2$u[authors == 'UNKNOWN',]), authors_train)
+lasso_svd3 = run_lasso_binary(as.matrix(svd_res3$u[select, ]), as.matrix(svd_res3$u[authors == 'UNKNOWN',]), authors_train)
+
 #NMF
-lasso_nmf = run_lasso_binary(as.matrix(W[select,]), as.matrix(W[authors == 'UNKNOWN',]), authors_train)
+lasso_nmf1 = run_lasso_binary(as.matrix(W1[select,]), as.matrix(W1[authors == 'UNKNOWN',]), authors_train)
+lasso_nmf2 = run_lasso_binary(as.matrix(W2[select,]), as.matrix(W2[authors == 'UNKNOWN',]), authors_train)
+lasso_nmf3 = run_lasso_binary(as.matrix(W3[select,]), as.matrix(W3[authors == 'UNKNOWN',]), authors_train)
 
-
-## Quick test of other embeddings
-bart_w2v_joint = run_bart_binary(word_df[select,], word_df[authors=="HAMILTON AND MADISON",],authors_train)
-bart_chunk_doc_joint = run_bart_binary(avg_chunk_df[select,], avg_chunk_df[authors=="HAMILTON AND MADISON",],authors_train)
-bart_sentence_doc_joint = run_bart_binary(avg_sentence_df[select,], avg_sentence_df[authors=="HAMILTON AND MADISON",],authors_train)
-
+## density plot
 plot_dist_joint(bart_lda1, bart_lda_joint1, authors_train)
 plot_dist_joint(bart_lda2, bart_lda_joint2, authors_train)
 plot_dist_joint(bart_lda3, bart_lda_joint3, authors_train)
+
+plot_dist(bart_lda1, authors_train)
+plot_dist(bart_lda2, authors_train)
+plot_dist(bart_lda3, authors_train)
 
 plot_dist(bart_bow1, authors_train)
 plot_dist(bart_bow2, authors_train)
@@ -137,18 +145,11 @@ plot_dist(bart_nmf1, authors_train)
 plot_dist(bart_nmf2, authors_train)
 plot_dist(bart_nmf3, authors_train)
 
-
 plot_dist(bart_lda_joint1, authors_train)
 plot_dist(bart_lda_joint2, authors_train)
 plot_dist(bart_lda_joint3, authors_train)
 
-
-plot_dist(bart_svd_joint, authors_train)
-plot_dist(bart_nmf_joint, authors_train)
-
-plot_dist(bart_w2v_joint, authors_train)
-plot_dist(bart_chunk_doc_joint, authors_train)
-plot_dist(bart_sentence_doc_joint, authors_train)
+# Run known-paper LOOCV
 
 oos_bow1 = run_oos_cv(as.matrix(tdm1[select,]),y_train)
 oos_bow2 = run_oos_cv(as.matrix(tdm2[select,]),y_train)
@@ -169,7 +170,6 @@ oos_nmf3 = run_oos_cv(W3[select,], y_train)
 
 write.table(oos_prediction,"CV_result2.txt")
 oos_prediction = read.table("CV_result2.txt")
-
 
 threshold = seq(from= 0, to= 1, by = 0.05)
 
