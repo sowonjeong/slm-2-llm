@@ -5,9 +5,9 @@ library(slam) # to preprocess the data into vector(tokenize)
 library(NLP)
 library(syllogi)
 library(textstem)
-library(SSLASSO)
+# library(SSLASSO)
 
-source("/Users/sowonjeong/txt-analysis/threshold.R") 
+source("utils/threshold.R")
 
 # Test for the lemmatization
 vector <- c("run", "ran", "running")
@@ -159,18 +159,18 @@ run_lasso_binary = function(x_train, x_test, y_train){
   return(list(predicted, predicted_test,beta0[order(abs(beta0), decreasing = TRUE)]))
 }
 
-library(BhGLM)
+# library(BhGLM)
 library(glmnet)
 #https://github.com/nyiuab/BhGLM/tree/master
-run_sslasso_binary = function(x_train, x_test, y_train,verbose =TRUE, s = c(0.04, 0.5)){
-  fit3 <- bmlasso(x_train,y_train,family="binomial",alpha = 1, ss = s, maxit = 500)
-  fit3$offset <- FALSE
-  beta = as.matrix(coef(fit3))
-  beta0 = beta[beta!=0,]
-  predicted =  predict(fit3,newx=x_train,type="response")[,1]
-  predicted_test = predict(fit3,newx=x_test,type="response")[,1]
-  return(list(predicted, predicted_test,beta0[order(abs(beta0), decreasing = TRUE)]))
-}
+# run_sslasso_binary = function(x_train, x_test, y_train,verbose =TRUE, s = c(0.04, 0.5)){
+#  fit3 <- bmlasso(x_train,y_train,family="binomial",alpha = 1, ss = s, maxit = 500)
+#  fit3$offset <- FALSE
+#  beta = as.matrix(coef(fit3))
+#  beta0 = beta[beta!=0,]
+#  predicted =  predict(fit3,newx=x_train,type="response")[,1]
+#  predicted_test = predict(fit3,newx=x_test,type="response")[,1]
+#  return(list(predicted, predicted_test,beta0[order(abs(beta0), decreasing = TRUE)]))
+#}
 
 
 plot_dist = function(res, y_train, save = NULL){
