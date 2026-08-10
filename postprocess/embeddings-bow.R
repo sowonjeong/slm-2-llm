@@ -190,11 +190,10 @@ l2error(oos_nmf, y_train)
 
 apply(oos_lda3, 1, function(row) opt_threshold(row, authors_train))
 
-clferror(oos_lda1, y_train)
 clferror(oos_lda1, c = 0.4, y_train)
-
 clferror(oos_lda2, c = 0.2, y_train)
 clferror(oos_lda3, c = 0.5, y_train)
+clferror(oos_lda3, y_train) # auto threshold
 
 clferror(oos_svd, c = 0.5, y_train)
 clferror(oos_svd3, c = 0.3, y_train)
@@ -202,4 +201,9 @@ clferror(oos_svd3, c = 0.3, y_train)
 clferror(oos_nmf, c = 0.5, y_train)
 
 
+compute_auc(oos_lda1, y_train)
+compute_auc(oos_lda2, y_train)
+compute_auc(oos_lda3, y_train)
+
+plot_roc(oos_lda3[2,],y_train)
 
