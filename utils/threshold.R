@@ -9,7 +9,7 @@ y_true <- sample(c(0, 1), n, replace = TRUE, prob = c(0.9, 0.1))  # Imbalanced d
 y_pred_prob <- runif(n)  # Example probabilities from a logistic regression model
 
 # ROC curve
-roc_obj <- roc(y_true, y_pred_prob)
+roc_obj <- roc(y_true, y_pred_prob, levels = c(0, 1), direction = "<")
 plot(roc_obj, main = "ROC Curve")
 auc(roc_obj)
 
@@ -54,7 +54,7 @@ opt_threshold = function(y_pred_prob, y_true){
   
   y_true = factor(y_true, levels = c(0,1))
   # ROC threshold
-  roc_obj <- suppressMessages(roc(y_true, y_pred_prob))
+  roc_obj <- suppressMessages(roc(y_true, y_pred_prob, levels = c(0, 1), direction = "<"))
   #plot(roc_obj, main = "ROC Curve")
   #auc(roc_obj)
   
@@ -120,8 +120,10 @@ compute_auc <- function(pred_mat, y_true, compute_pr = TRUE, method_names = NULL
   for (i in seq_len(n_methods)) {
     preds <- pred_mat[i, ]
     
-    # ROC–AUC (set levels/direction explicitly)
-    roc_obj <- roc(response = y_true, predictor = preds, quiet = TRUE)
+    # ROC–AUC (levels/direction: 0 = Hamilton control, 1 = Madison case,
+    # "<" = higher predicted P(Madison) means Madison.
+    roc_obj <- roc(response = y_true, predictor = preds, 
+                  levels = c(0, 1), direction = "<", quiet = TRUE)
     auc_roc[i] <- as.numeric(auc(roc_obj))
     
     # PR–AUC (positive class = 1 goes to scores.class0)
@@ -157,7 +159,7 @@ plot_roc <- function(y_pred, y_true, save = NULL){
     file_name <- paste0(save, ".pdf")
     pdf(file_name,pointsize=15)
   }
-  roc_obj <- roc(y_true, y_pred)
+  roc_obj <- roc(y_true, y_pred, levels = c(0, 1), direction = "<")
   auc_roc = auc(roc_obj)
   plot(roc_obj, 
        legacy.axes = TRUE, # False positive rate (not by specificity)
