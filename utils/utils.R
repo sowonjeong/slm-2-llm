@@ -223,8 +223,9 @@ run_oos_cv = function(x_train, y_train){
     
     # LASSO words
     
-    fit_cv <- cv.gamlr(x_train_i,y_train_i,family="binomial")
-    oos_prediction[1,i]<-predict(fit_cv,newdata=x_test_i,type="response")
+    fit_cv <- gamlr(x_train_i,y_train_i,family="binomial")
+    seg <- which.min(AICc(fit_cv))
+    oos_prediction[1,i]<-predict(fit_cv,newdata=x_test_i,type="response",select=seg)
     
     # BART words
     
